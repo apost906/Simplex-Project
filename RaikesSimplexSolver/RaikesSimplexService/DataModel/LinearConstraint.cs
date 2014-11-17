@@ -47,4 +47,5 @@ namespace RaikesSimplexService.DataModel
         [EnumMember]
         LessThanOrEquals
     }
+
 }

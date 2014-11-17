@@ -76,5 +76,7 @@ namespace RaikesSimplexService.DataModel
             }
             return sign;
         }
+
+        public string ToString { get; set; }
     }
 }
