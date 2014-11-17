@@ -166,6 +166,19 @@ namespace UnitTests
                 }
             }
 
+            double[] zRow = new double[10];
+            zRow[0] = goal.Coefficients[0];
+            zRow[1] = goal.Coefficients[1];
+            for (int i = 2; i <= zRow.Length - 2; i++)
+            {
+                zRow[i] = 0;
+            }
+            zRow[9] = goal.ConstantTerm;
+
+            System.Diagnostics.Debug.WriteLine(string.Join("\t", zRow));
+            
+
+
             if (aCount > 0)
             {
                 String summary = "";

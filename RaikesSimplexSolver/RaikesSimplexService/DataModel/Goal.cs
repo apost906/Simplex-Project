@@ -24,6 +24,12 @@ namespace RaikesSimplexService.DataModel
         [DataMember]
         public double ConstantTerm { get; set; }
 
+        /// <summary>
+        /// Data member that represents the type of goal - min or max
+        /// </summary>
+        [DataMember]
+        public GoalKind GoalKind { get; set; } 
+
         public string ToString { get; set; }
     }
 }
