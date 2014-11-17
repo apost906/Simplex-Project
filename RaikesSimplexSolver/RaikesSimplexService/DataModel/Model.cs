@@ -31,6 +31,52 @@ namespace RaikesSimplexService.DataModel
         [DataMember]
         public GoalKind GoalKind { get; set; }
 
+
+        public String Definition()
+        {
+            String summary = "Decision variables:\n\t";
+            for (int i = 0; i < this.Goal.Coefficients.Length; i++)
+            {
+                summary += " " + "X" + (i + 1);
+            }
+            summary += "\nv" + this.GoalKind.ToString();
+            for (int i = 0; i < this.Goal.Coefficients.Length; i++)
+            {
+                summary += " " + this.Goal.Coefficients[i];
+            }
+            summary += "\n";
+            for (int i = 0; i < this.Constraints.Count; i++)
+            {
+                summary += "R" + i + "\t";
+
+                for (int j = 0; j < this.Constraints[i].Coefficients.Length; j++)
+                {
+                    summary += " " + this.Constraints[i].Coefficients[j];
+                }
+                summary += " " + RelationshipRepresentation(this.Constraints[i].Relationship);
+                summary += " " + this.Constraints[i].Value + "\n";
+            }
+            return summary;
+        }
+
+        private String RelationshipRepresentation(Relationship r)
+        {
+            String sign;
+            if (r.Equals(Relationship.LessThanOrEquals))
+            {
+                sign = "<=";
+            }
+            else if (r.Equals(Relationship.GreaterThanOrEquals))
+            {
+                sign = ">=";
+            }
+            else
+            {
+                sign = "=";
+            }
+            return sign;
+        }
+
         public string ToString { get; set; }
     }
 }
