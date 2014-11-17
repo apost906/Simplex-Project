@@ -129,14 +129,22 @@ namespace UnitTests
 
             //Act
             
-            //Haven't implemented yet :S
             
             //var actual = target.Solve(model);
             System.Diagnostics.Debug.WriteLine("Hello!");
 
-            Matrix<double> m = Matrix<double>.Build.Random(3, 4);       
+            double[] c1 = { 1, 2, 5 };
+            double[] c2 = { 3, 2, 12 };
+            double[] c3 = { 0, 1, 5 };
+            double[] c4 = { 1, 0, 7 };
 
-            System.Diagnostics.Debug.WriteLine(m);
+            var M = Matrix<double>.Build;
+            double[,] stuff = {{ c1[0], c1[1], c1[2] }, { c2[0], c2[1], c2[2] },
+                                { c3[0], c3[1], c3[2] }, { c4[0], c4[1], c4[2] }};
+            
+            var output = M.DenseOfArray(stuff);
+
+            System.Diagnostics.Debug.WriteLine(output);
 
             //Assert
             //commented out below too...
