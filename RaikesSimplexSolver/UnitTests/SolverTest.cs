@@ -73,7 +73,9 @@ namespace UnitTests
         public void ExampleSolveTest()
         {
             #region Arrange
-            var target = new Solver();            
+            var target = new Solver();
+            int sCount = 0;
+            int aCount = 0;
 
             var lc1 = new LinearConstraint()
             {
@@ -103,13 +105,13 @@ namespace UnitTests
                 Value = 5
             };
 
-            var constraints = new List<LinearConstraint>() {lc1, lc2, lc3, lc4};
+            var constraints = new List<LinearConstraint>() { lc1, lc2, lc3, lc4 };
 
-            var goal = new Goal() 
-            { 
+            var goal = new Goal()
+            {
                 Coefficients = new double[2] { 0.2, 0.3 },
                 ConstantTerm = 0
-            };           
+            };
 
             var model = new Model()
             {
@@ -117,7 +119,7 @@ namespace UnitTests
                 Goal = goal,
                 GoalKind = GoalKind.Minimize
             };
-            
+
             var expected = new Solution()
             {
                 Decisions = new double[2] { 3, 0 },
@@ -125,32 +127,49 @@ namespace UnitTests
                 AlternateSolutionsExist = false,
                 OptimalValue = 0.6
             };
-            #endregion
 
-            //Act
+            foreach (LinearConstraint lc in constraints)
+            {
+                if (lc.Relationship == Relationship.LessThanOrEquals)
+                {
+                    sCount++;
+                }
+                else if (lc.Relationship == Relationship.GreaterThanOrEquals)
+                {
+                    sCount++;
+                    aCount++;
+                }
+            }
+
+            int sOffset = 0;
+            int aOffset = 0;
+            int totalLength = aCount + sCount + 3;
+            var newConstraints = new List<LinearConstraint>() { };
+            foreach (LinearConstraint constraint in constraints)
+            {
+
+                newConstraints.Add(target.convertInequality(constraint, sCount, sOffset, aOffset, totalLength));
+                sOffset++;
+                if (constraint.Relationship == Relationship.GreaterThanOrEquals)
+                {
+                    aOffset++;
+                }
+                System.Diagnostics.Debug.WriteLine(string.Join(" ", constraint.Coefficients));
+            }
+
             
-            
-            //var actual = target.Solve(model);
-            System.Diagnostics.Debug.WriteLine("Hello!");
 
-            double[] c1 = { 1, 2, 5 };
-            double[] c2 = { 3, 2, 12 };
-            double[] c3 = { 0, 1, 5 };
-            double[] c4 = { 1, 0, 7 };
+            //var output = M.DenseOfArray();
 
-            var M = Matrix<double>.Build;
-            double[,] stuff = {{ c1[0], c1[1], c1[2] }, { c2[0], c2[1], c2[2] },
-                                { c3[0], c3[1], c3[2] }, { c4[0], c4[1], c4[2] }};
-            
-            var output = M.DenseOfArray(stuff);
-
-            System.Diagnostics.Debug.WriteLine(output);
 
             //Assert
             //commented out below too...
             //CollectionAssert.AreEqual(expected.Decisions, actual.Decisions);
             //Assert.AreEqual(expected.Quality, actual.Quality);
             //Assert.AreEqual(expected.AlternateSolutionsExist, actual.AlternateSolutionsExist);
-        }
+            //var actual = target.Solve(model);
+           }
+            #endregion
     }
+  
 }
