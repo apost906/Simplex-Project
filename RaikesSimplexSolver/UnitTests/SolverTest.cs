@@ -145,17 +145,43 @@ namespace UnitTests
             int aOffset = 0;
             int totalLength = aCount + sCount + 3;
             var newConstraints = new List<LinearConstraint>() { };
+            var wGoal = new Goal()
+            {
+                Coefficients = new double[totalLength],
+                ConstantTerm = 0
+            };
             foreach (LinearConstraint constraint in constraints)
             {
-
-                newConstraints.Add(target.convertInequality(constraint, sCount, sOffset, aOffset, totalLength));
+                LinearConstraint newLC = target.convertInequality(constraint, sCount, sOffset, aOffset, totalLength);
+                newConstraints.Add(newLC);
                 sOffset++;
                 if (constraint.Relationship == Relationship.GreaterThanOrEquals)
                 {
                     aOffset++;
+                    for (int i = 0; i < newLC.Coefficients.Length; i++)
+                    {
+                        wGoal.Coefficients[i] += newLC.Coefficients[i];
+                    }
+                    wGoal.ConstantTerm += constraint.Value;
                 }
             }
 
+            if (aCount > 0)
+            {
+                String summary = "";
+                for (int i = 0; i < totalLength - aCount-1; i++)
+                {
+                    summary += (-1 * wGoal.Coefficients[i]) + "\t";
+                }
+                for (int i = totalLength - aCount-1; i < totalLength-1; i++)
+                {
+                    summary += wGoal.Coefficients[i] + "\t";
+                }
+                summary += (-1 * wGoal.Coefficients[totalLength-1]);
+                System.Diagnostics.Debug.WriteLine(summary);
+            }
+
+            
             
 
             //var output = M.DenseOfArray();
