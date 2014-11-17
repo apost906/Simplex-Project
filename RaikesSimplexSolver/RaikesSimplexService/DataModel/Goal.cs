@@ -23,5 +23,7 @@ namespace RaikesSimplexService.DataModel
         /// </summary>
         [DataMember]
         public double ConstantTerm { get; set; }
+
+        public string ToString { get; set; }
     }
 }

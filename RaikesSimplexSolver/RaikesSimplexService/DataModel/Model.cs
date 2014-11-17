@@ -30,5 +30,7 @@ namespace RaikesSimplexService.DataModel
         /// </summary>
         [DataMember]
         public GoalKind GoalKind { get; set; }
+
+        public string ToString { get; set; }
     }
 }

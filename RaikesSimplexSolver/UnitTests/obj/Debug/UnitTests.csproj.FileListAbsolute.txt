@@ -26,3 +26,12 @@ C:\Users\adyer\Downloads\RaikesSimplexSolver\UnitTests\bin\Debug\RaikesSimplexSe
 C:\Users\adyer\Downloads\RaikesSimplexSolver\UnitTests\obj\Debug\UnitTests.csprojResolveAssemblyReference.cache
 C:\Users\adyer\Downloads\RaikesSimplexSolver\UnitTests\obj\Debug\UnitTests.dll
 C:\Users\adyer\Downloads\RaikesSimplexSolver\UnitTests\obj\Debug\UnitTests.pdb
+C:\Users\adyer\Documents\GitHub\Simplex-Project\RaikesSimplexSolver\UnitTests\bin\Debug\UnitTests.dll
+C:\Users\adyer\Documents\GitHub\Simplex-Project\RaikesSimplexSolver\UnitTests\bin\Debug\UnitTests.pdb
+C:\Users\adyer\Documents\GitHub\Simplex-Project\RaikesSimplexSolver\UnitTests\bin\Debug\RaikesSimplexService.dll
+C:\Users\adyer\Documents\GitHub\Simplex-Project\RaikesSimplexSolver\UnitTests\bin\Debug\RaikesSimplexService.pdb
+C:\Users\adyer\Documents\GitHub\Simplex-Project\RaikesSimplexSolver\UnitTests\obj\Debug\UnitTests.csprojResolveAssemblyReference.cache
+C:\Users\adyer\Documents\GitHub\Simplex-Project\RaikesSimplexSolver\UnitTests\obj\Debug\UnitTests.dll
+C:\Users\adyer\Documents\GitHub\Simplex-Project\RaikesSimplexSolver\UnitTests\obj\Debug\UnitTests.pdb
+C:\Users\adyer\Documents\GitHub\Simplex-Project\RaikesSimplexSolver\UnitTests\bin\Debug\MathNet.Numerics.dll
+C:\Users\adyer\Documents\GitHub\Simplex-Project\RaikesSimplexSolver\UnitTests\bin\Debug\MathNet.Numerics.xml

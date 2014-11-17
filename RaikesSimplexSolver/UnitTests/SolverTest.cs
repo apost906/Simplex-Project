@@ -3,6 +3,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using RaikesSimplexService.DataModel;
+using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace UnitTests
 {
@@ -128,9 +130,13 @@ namespace UnitTests
             //Act
             
             //Haven't implemented yet :S
+            
             //var actual = target.Solve(model);
             System.Diagnostics.Debug.WriteLine("Hello!");
-            System.Diagnostics.Debug.WriteLine("Lol I like C#");
+
+            Matrix<double> m = Matrix<double>.Build.Random(3, 4);       
+
+            System.Diagnostics.Debug.WriteLine(m);
 
             //Assert
             //commented out below too...
