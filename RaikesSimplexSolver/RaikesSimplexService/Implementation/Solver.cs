@@ -37,6 +37,7 @@ namespace RaikesSimplexService.InsertTeamNameHere
                 newConstraint.Coefficients.SetValue(-1, sOffset + 2);
                 newConstraint.Coefficients.SetValue(1, aOffset + 2 + sCount);
             }
+            System.Diagnostics.Debug.WriteLine(string.Join("\t", newConstraint.Coefficients));
             return newConstraint;
         }
     }

@@ -154,7 +154,6 @@ namespace UnitTests
                 {
                     aOffset++;
                 }
-                System.Diagnostics.Debug.WriteLine(string.Join(" ", constraint.Coefficients));
             }
 
             
