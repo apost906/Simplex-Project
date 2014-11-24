@@ -31,6 +31,15 @@ namespace RaikesSimplexService.DataModel
         [DataMember]
         public GoalKind GoalKind { get; set; }
 
+        public void setConstraints(List<LinearConstraint> constraints)
+        {
+            this.Constraints = constraints;
+        }
+
+        public void setGoal(Goal goal)
+        {
+            this.Goal = goal;
+        }
 
         public String Definition()
         {

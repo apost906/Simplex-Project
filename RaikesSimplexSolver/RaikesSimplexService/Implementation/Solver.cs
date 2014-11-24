@@ -6,6 +6,8 @@ using System.ServiceModel;
 using System.Text;
 using RaikesSimplexService.Contracts;
 using RaikesSimplexService.DataModel;
+using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace RaikesSimplexService.InsertTeamNameHere
 {
@@ -17,6 +19,7 @@ namespace RaikesSimplexService.InsertTeamNameHere
         int aCount = 0;
         public Solution Solve(Model model)
         {
+            Matrix<double> m = Matrix<double>.Build.Random(3, 4);
             throw new NotImplementedException();
         }
 
@@ -58,7 +61,14 @@ namespace RaikesSimplexService.InsertTeamNameHere
                     wGoal.ConstantTerm += constraint.Value;
                 }
             }
-            if (aCount > 0)
+            model.setConstraints(newConstraints);
+           
+            foreach (LinearConstraint constraint in model.Constraints)
+            {
+                System.Diagnostics.Debug.WriteLine(string.Join("\t", constraint.Coefficients));
+            }
+            
+            /*if (aCount > 0)
             {
                 String summary = "";
                 for (int i = 0; i < totalLength - aCount - 1; i++)
@@ -70,7 +80,8 @@ namespace RaikesSimplexService.InsertTeamNameHere
                     summary += wGoal.Coefficients[i] + "\t";
                 }
                 System.Diagnostics.Debug.WriteLine(summary);
-            }
+            }*/
+            model.setGoal(wGoal);
         }
 
         public LinearConstraint convertInequality(LinearConstraint lc, int sCount, int sOffset, int aOffset, int totalLength)
@@ -83,7 +94,6 @@ namespace RaikesSimplexService.InsertTeamNameHere
             };
             newConstraint.Coefficients.SetValue(lc.Coefficients[0], 0);
             newConstraint.Coefficients.SetValue(lc.Coefficients[1], 1);
-            //newConstraint.Coefficients.SetValue(lc.Value, totalLength - 1);
             if (lc.Relationship == Relationship.LessThanOrEquals)
             {
                 newConstraint.Coefficients.SetValue(1, sOffset + 2);
@@ -93,8 +103,11 @@ namespace RaikesSimplexService.InsertTeamNameHere
                 newConstraint.Coefficients.SetValue(-1, sOffset + 2);
                 newConstraint.Coefficients.SetValue(1, aOffset + 2 + sCount);
             }
-            System.Diagnostics.Debug.WriteLine(string.Join("\t", newConstraint.Coefficients));
             return newConstraint;
         }
+
+
+
+
     }
 }
