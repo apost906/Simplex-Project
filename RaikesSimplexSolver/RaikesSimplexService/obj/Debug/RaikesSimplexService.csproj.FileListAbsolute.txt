@@ -30,3 +30,11 @@ C:\Users\adyer\Documents\GitHub\Simplex-Project\RaikesSimplexSolver\RaikesSimple
 C:\Users\adyer\Documents\GitHub\Simplex-Project\RaikesSimplexSolver\RaikesSimplexService\obj\Debug\RaikesSimplexService.pdb
 C:\Users\adyer\Documents\GitHub\Simplex-Project\RaikesSimplexSolver\RaikesSimplexService\bin\Debug\MathNet.Numerics.dll
 C:\Users\adyer\Documents\GitHub\Simplex-Project\RaikesSimplexSolver\RaikesSimplexService\bin\Debug\MathNet.Numerics.xml
+C:\Users\Nicholas\Documents\GitHub\Simplex-Project\RaikesSimplexSolver\RaikesSimplexService\bin\Debug\RaikesSimplexService.dll.config
+C:\Users\Nicholas\Documents\GitHub\Simplex-Project\RaikesSimplexSolver\RaikesSimplexService\bin\Debug\RaikesSimplexService.dll
+C:\Users\Nicholas\Documents\GitHub\Simplex-Project\RaikesSimplexSolver\RaikesSimplexService\bin\Debug\RaikesSimplexService.pdb
+C:\Users\Nicholas\Documents\GitHub\Simplex-Project\RaikesSimplexSolver\RaikesSimplexService\bin\Debug\MathNet.Numerics.dll
+C:\Users\Nicholas\Documents\GitHub\Simplex-Project\RaikesSimplexSolver\RaikesSimplexService\bin\Debug\MathNet.Numerics.xml
+C:\Users\Nicholas\Documents\GitHub\Simplex-Project\RaikesSimplexSolver\RaikesSimplexService\obj\Debug\RaikesSimplexService.csprojResolveAssemblyReference.cache
+C:\Users\Nicholas\Documents\GitHub\Simplex-Project\RaikesSimplexSolver\RaikesSimplexService\obj\Debug\RaikesSimplexService.dll
+C:\Users\Nicholas\Documents\GitHub\Simplex-Project\RaikesSimplexSolver\RaikesSimplexService\obj\Debug\RaikesSimplexService.pdb

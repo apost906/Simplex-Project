@@ -74,8 +74,6 @@ namespace UnitTests
         {
             #region Arrange
             var target = new Solver();
-            int sCount = 0;
-            int aCount = 0;
 
             var lc1 = new LinearConstraint()
             {
@@ -128,43 +126,7 @@ namespace UnitTests
                 OptimalValue = 0.6
             };
 
-            foreach (LinearConstraint lc in constraints)
-            {
-                if (lc.Relationship == Relationship.LessThanOrEquals)
-                {
-                    sCount++;
-                }
-                else if (lc.Relationship == Relationship.GreaterThanOrEquals)
-                {
-                    sCount++;
-                    aCount++;
-                }
-            }
-
-            int sOffset = 0;
-            int aOffset = 0;
-            int totalLength = aCount + sCount + 3;
-            var newConstraints = new List<LinearConstraint>() { };
-            var wGoal = new Goal()
-            {
-                Coefficients = new double[totalLength],
-                ConstantTerm = 0
-            };
-            foreach (LinearConstraint constraint in constraints)
-            {
-                LinearConstraint newLC = target.convertInequality(constraint, sCount, sOffset, aOffset, totalLength);
-                newConstraints.Add(newLC);
-                sOffset++;
-                if (constraint.Relationship == Relationship.GreaterThanOrEquals)
-                {
-                    aOffset++;
-                    for (int i = 0; i < newLC.Coefficients.Length; i++)
-                    {
-                        wGoal.Coefficients[i] += newLC.Coefficients[i];
-                    }
-                    wGoal.ConstantTerm += constraint.Value;
-                }
-            }
+            target.convertAllInequalities(model);
 
             double[] zRow = new double[10];
             zRow[0] = goal.Coefficients[0];
@@ -179,20 +141,7 @@ namespace UnitTests
             
 
 
-            if (aCount > 0)
-            {
-                String summary = "";
-                for (int i = 0; i < totalLength - aCount-1; i++)
-                {
-                    summary += (-1 * wGoal.Coefficients[i]) + "\t";
-                }
-                for (int i = totalLength - aCount-1; i < totalLength-1; i++)
-                {
-                    summary += wGoal.Coefficients[i] + "\t";
-                }
-                summary += (-1 * wGoal.Coefficients[totalLength-1]);
-                System.Diagnostics.Debug.WriteLine(summary);
-            }
+            
 
             
             
