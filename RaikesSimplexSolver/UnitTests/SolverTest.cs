@@ -138,7 +138,10 @@ namespace UnitTests
             zRow[9] = goal.ConstantTerm;
 
             System.Diagnostics.Debug.WriteLine(string.Join("\t", zRow));
-            
+
+            Matrix<double> m = target.convertToMatrix(model);
+
+            System.Diagnostics.Debug.WriteLine(m);
 
 
             

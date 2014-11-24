@@ -106,6 +106,25 @@ namespace RaikesSimplexService.InsertTeamNameHere
             return newConstraint;
         }
 
+        public Matrix<double> convertToMatrix(Model model)
+        {
+            List<double[]> list = new List<double[]>();
+            foreach (LinearConstraint lc in model.Constraints)
+            {
+                double[] a = new double[lc.Coefficients.Length + 1];
+                lc.Coefficients.CopyTo(a, 0);
+                a[a.Length - 1] = lc.Value;
+                list.Add(a);
+            }
+            double[] zRow = new double[model.Goal.Coefficients.Length + 1];
+            model.Goal.Coefficients.CopyTo(zRow, 0);
+            zRow[zRow.Length - 1] = model.Goal.ConstantTerm;
+            list.Add(zRow);
+            Matrix<double> m = Matrix<double>.Build.DenseOfRowArrays(list);
+
+            return m;
+        }
+
 
 
 
