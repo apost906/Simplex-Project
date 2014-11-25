@@ -83,7 +83,7 @@ namespace RaikesSimplexService.InsertTeamNameHere
            
             foreach (LinearConstraint constraint in model.Constraints)
             {
-                System.Diagnostics.Debug.WriteLine(string.Join("\t", constraint.Coefficients));
+                //System.Diagnostics.Debug.WriteLine(string.Join("\t", constraint.Coefficients));
             }
             
             /*if (aCount > 0)
@@ -160,6 +160,20 @@ namespace RaikesSimplexService.InsertTeamNameHere
             Matrix<double> m = Matrix<double>.Build.DenseOfRowArrays(list);
 
             return m;
+        }
+
+        public int findIndexOfSmallestPositive(Vector<double> xb, Vector<double> p1)
+        {
+
+            var vector = xb / p1;
+            //divide
+            System.Diagnostics.Debug.WriteLine(vector);
+            var min = vector.AbsoluteMinimum();
+            System.Diagnostics.Debug.WriteLine("minimum value = " + min);
+            var minIndex = vector.AbsoluteMinimumIndex();
+            System.Diagnostics.Debug.WriteLine("index = " + minIndex);
+            return minIndex;
+
         }
 
         public double[] basicColumnIndecies(Model model) {

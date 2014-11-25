@@ -139,17 +139,21 @@ namespace UnitTests
 
             System.Diagnostics.Debug.WriteLine(string.Join("\t", zRow));
 
+            System.Diagnostics.Debug.WriteLine("this is the z row!");
             Matrix<double> m = target.convertToMatrix(model);
 
-            System.Diagnostics.Debug.WriteLine(m);
+            //Print the Matrix!
+            String matrix = m.ToString();
+            matrix = matrix.Replace("  ", "\t");
+            System.Diagnostics.Debug.WriteLine(matrix);
 
 
-            
-
-            
-            
-
-            //var output = M.DenseOfArray();
+            //Test find min value of vector division
+            var V = Vector<double>.Build;
+            var v1 = V.DenseOfArray(new[] {10.0, 20.0, 30.0 });
+            var V2 = Vector<double>.Build;
+            var v2 = V.DenseOfArray(new[] { 2.0, 2.0, 2.0 });
+            var output = target.findIndexOfSmallestPositive(v1, v2);
 
 
             //Assert
