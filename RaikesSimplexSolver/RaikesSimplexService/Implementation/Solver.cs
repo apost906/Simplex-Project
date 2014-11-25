@@ -19,7 +19,25 @@ namespace RaikesSimplexService.InsertTeamNameHere
         int aCount = 0;
         public Solution Solve(Model model)
         {
-            Matrix<double> m = Matrix<double>.Build.Random(3, 4);
+            convertAllInequalities(model);
+            double[] basicVariableIndecies = basicColumnIndecies(model);
+            Matrix<double> matrix = convertToMatrix(model);
+            Vector<double> rhs = matrix.Column(matrix.ColumnCount - 1);
+            Vector<double> zRow = matrix.Row(matrix.RowCount - 1);
+            double min = 0;
+            int mindex = -1;
+            for(int i = 0; i < model.Goal.Coefficients.Length; i++) {
+                if (!basicVariableIndecies.Contains(i) && model.Goal.Coefficients[i] < 0)
+                {
+                    min = model.Goal.Coefficients[i];
+                    mindex = i;
+                }
+            }
+            if (mindex != -1)
+            {
+
+            }
+            
             throw new NotImplementedException();
         }
 
@@ -125,6 +143,25 @@ namespace RaikesSimplexService.InsertTeamNameHere
             return m;
         }
 
+        public Matrix<double> convertToCoefficientsMatrix(Model model)
+        {
+            List<double[]> list = new List<double[]>();
+            foreach (LinearConstraint lc in model.Constraints)
+            {
+                double[] a = new double[lc.Coefficients.Length + 1];
+                lc.Coefficients.CopyTo(a, 0);
+                a[a.Length - 1] = lc.Value;
+                list.Add(a);
+            }
+            double[] zRow = new double[model.Goal.Coefficients.Length + 1];
+            model.Goal.Coefficients.CopyTo(zRow, 0);
+            zRow[zRow.Length - 1] = model.Goal.ConstantTerm;
+            list.Add(zRow);
+            Matrix<double> m = Matrix<double>.Build.DenseOfRowArrays(list);
+
+            return m;
+        }
+
         public int findIndexOfSmallestPositive(Vector<double> xb, Vector<double> p1)
         {
 
@@ -137,6 +174,27 @@ namespace RaikesSimplexService.InsertTeamNameHere
             System.Diagnostics.Debug.WriteLine("index = " + minIndex);
             return minIndex;
 
+        }
+
+        public double[] basicColumnIndecies(Model model) {
+            double[] indecies = new double[model.Constraints.Count];
+            int count = 0;
+            for(int i = 0; i < model.Constraints[0].Coefficients.Length) {
+                bool hasOne = false;
+                bool restZero = true;
+                for(int j = 0; j < model.Constraints.Count; j++) {
+                    if(!hasOne && model.Constraints[j].Coefficients[i] == 1) {
+                        hasOne = true;
+                    } else if(model.Constraints[j].Coefficients[i] != 0) {
+                        restZero = false;
+                    }
+                }
+                if(hasOne && restZero) {
+                    indecies[count] = i;
+                    count++;
+                }
+            }
+            return indecies;
         }
 
 
