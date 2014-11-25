@@ -139,9 +139,14 @@ namespace UnitTests
 
             System.Diagnostics.Debug.WriteLine(string.Join("\t", zRow));
 
+            System.Diagnostics.Debug.WriteLine("this is the z row!");
             Matrix<double> m = target.convertToMatrix(model);
 
-            System.Diagnostics.Debug.WriteLine(m);
+            //Print the Matrix!
+            String matrix = m.ToString();
+            matrix = matrix.Replace("  ", "\t");
+            System.Diagnostics.Debug.WriteLine(matrix);
+
 
 
             

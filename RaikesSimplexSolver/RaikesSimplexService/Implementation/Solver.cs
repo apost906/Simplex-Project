@@ -65,7 +65,7 @@ namespace RaikesSimplexService.InsertTeamNameHere
            
             foreach (LinearConstraint constraint in model.Constraints)
             {
-                System.Diagnostics.Debug.WriteLine(string.Join("\t", constraint.Coefficients));
+                //System.Diagnostics.Debug.WriteLine(string.Join("\t", constraint.Coefficients));
             }
             
             /*if (aCount > 0)
