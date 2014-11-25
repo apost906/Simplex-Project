@@ -149,10 +149,14 @@ namespace UnitTests
 
 
 
-            
 
-            
-            
+            var V = Vector<double>.Build;
+            var v1 = V.DenseOfArray(new[] {10.0, 20.0, 30.0 });
+
+            var V2 = Vector<double>.Build;
+            var v2 = V.DenseOfArray(new[] { 2.0, 2.0, 2.0 });
+
+            var output = target.findIndexOfSmallestPositive(v1, v2);
 
             //var output = M.DenseOfArray();
 

@@ -125,6 +125,20 @@ namespace RaikesSimplexService.InsertTeamNameHere
             return m;
         }
 
+        public int findIndexOfSmallestPositive(Vector<double> xb, Vector<double> p1)
+        {
+
+            var vector = xb / p1;
+            //divide
+            System.Diagnostics.Debug.WriteLine(vector);
+            var min = vector.AbsoluteMinimum();
+            System.Diagnostics.Debug.WriteLine("minimum value = " + min);
+            var minIndex = vector.AbsoluteMinimumIndex();
+            System.Diagnostics.Debug.WriteLine("index = " + minIndex);
+            return minIndex;
+
+        }
+
 
 
 
