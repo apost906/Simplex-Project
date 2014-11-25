@@ -153,10 +153,6 @@ namespace RaikesSimplexService.InsertTeamNameHere
                 a[a.Length - 1] = lc.Value;
                 list.Add(a);
             }
-            double[] zRow = new double[model.Goal.Coefficients.Length + 1];
-            model.Goal.Coefficients.CopyTo(zRow, 0);
-            zRow[zRow.Length - 1] = model.Goal.ConstantTerm;
-            list.Add(zRow);
             Matrix<double> m = Matrix<double>.Build.DenseOfRowArrays(list);
 
             return m;
