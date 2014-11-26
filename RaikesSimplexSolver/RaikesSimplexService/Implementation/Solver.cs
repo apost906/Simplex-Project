@@ -21,7 +21,7 @@ namespace RaikesSimplexService.InsertTeamNameHere
         {
             
             convertAllInequalities(model);
-            double[] basicVariableIndecies = basicColumnIndecies(model);
+            int[] basicVariableIndecies = basicColumnIndecies(model);
             Matrix<double> matrix = convertToMatrix(model);
             Matrix<double> coefficientMatrix = convertToCoefficientsMatrix(model);
             Vector<double> rhs = matrix.Column(matrix.ColumnCount - 1);
@@ -31,7 +31,7 @@ namespace RaikesSimplexService.InsertTeamNameHere
             double min = 0;
             int mindex = -1;
             for(int i = 0; i < model.Goal.Coefficients.Length; i++) {
-                double c = calculateNewCoefficient(i, matrix, basicVariableIndecies);
+                double c = calculateNewCoefficient(i, zRow, primeVectors, basicVariableIndecies);
                 if (!basicVariableIndecies.Contains(i) && c < 0)
                 {
                     min = c;
@@ -40,8 +40,8 @@ namespace RaikesSimplexService.InsertTeamNameHere
             }
             if (mindex != -1)
             {
-
-                findIndexOfSmallestPositive(, );
+                int index = findIndexOfSmallestPositive(primeVectors[primeVectors.Count-1], primeVectors[mindex]);
+                basicVariableIndecies[index] = mindex;
             }
             
             throw new NotImplementedException();
@@ -178,8 +178,8 @@ namespace RaikesSimplexService.InsertTeamNameHere
 
         }
 
-        public double[] basicColumnIndecies(Model model) {
-            double[] indecies = new double[model.Constraints.Count];
+        public int[] basicColumnIndecies(Model model) {
+            int[] indecies = new int[model.Constraints.Count];
             int count = 0;
             for (int i = 0; i < model.Constraints[0].Coefficients.Length; i++)
             {
@@ -205,7 +205,7 @@ namespace RaikesSimplexService.InsertTeamNameHere
             return indecies;
         }
 
-        public Matrix<double> findBasicMatrix(Matrix<double> matrix, double[] indices)
+        public Matrix<double> findBasicMatrix(Matrix<double> matrix, int[] indices)
         {
             List<Vector<double>> list = new List<Vector<double>>();
             foreach (int i in indices)
