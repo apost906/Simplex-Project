@@ -119,26 +119,21 @@ namespace UnitTests
                 OptimalValue = 1400
             };
 
-            target.convertAllInequalities(model);
+       //     target.convertAllInequalities(model);
 
-            double[] zRow = new double[10];
-            zRow[0] = goal.Coefficients[0];
-            zRow[1] = goal.Coefficients[1];
-            for (int i = 2; i <= zRow.Length - 2; i++)
-            {
-                zRow[i] = 0;
-            }
-            zRow[9] = goal.ConstantTerm;
-
-            System.Diagnostics.Debug.WriteLine(string.Join("\t", zRow));
-
-            System.Diagnostics.Debug.WriteLine("this is the z row!");
-            Matrix<double> m = target.convertToMatrix(model);
+           
+       //     Matrix<double> m = target.convertToMatrix(model);
 
             //Print the Matrix!
-            String matrix = m.ToString();
-            matrix = matrix.Replace("  ", "\t");
-            System.Diagnostics.Debug.WriteLine(matrix);
+   //         String matrix = m.ToString();
+    //        matrix = matrix.Replace("  ", "\t");
+     //       System.Diagnostics.Debug.WriteLine(matrix);
+
+            Solution s = target.Solve(model);
+
+            System.Diagnostics.Debug.WriteLine("d0 " + s.Decisions[0]);
+            System.Diagnostics.Debug.WriteLine("d1 " + s.Decisions[1]);
+            System.Diagnostics.Debug.WriteLine("O " + s.OptimalValue);
 
             //Assert
             //commented out below too...

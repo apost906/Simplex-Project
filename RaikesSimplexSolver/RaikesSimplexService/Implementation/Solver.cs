@@ -51,8 +51,9 @@ namespace RaikesSimplexService.InsertTeamNameHere
             } while (mindex != -1);
 
             foreach(int i in basicVariableIndecies) {
-                double xbPrime = primeVectors[primeVectors.Count-1].At(i);
+                
                 if(i < decision.Length) {
+                    double xbPrime = primeVectors[primeVectors.Count-1].At(i);
                     decision[i] = xbPrime;
                 }
             }
@@ -61,9 +62,9 @@ namespace RaikesSimplexService.InsertTeamNameHere
                 optimalValue += decision[i] * zRow[i];
             }
 
-  //          Solution s = new Solution(decision, optimalValue, false, SolutionQuality.Optimal);
+            Solution s = new Solution(decision, optimalValue, false, SolutionQuality.Optimal);
 
-            return null;
+            return s;
         }
 
         public void convertAllInequalities(Model model){
@@ -103,13 +104,16 @@ namespace RaikesSimplexService.InsertTeamNameHere
                     }
                     wGoal.ConstantTerm += constraint.Value;
                 }
+                else
+                {
+                    for (int i = 0; i < model.Goal.Coefficients.Length; i++)
+                    {
+                        wGoal.Coefficients[i] = -1 * model.Goal.Coefficients[i];
+                    }
+                    wGoal.ConstantTerm = model.Goal.ConstantTerm;
+                }
             }
             model.setConstraints(newConstraints);
-           
-            foreach (LinearConstraint constraint in model.Constraints)
-            {
-                //System.Diagnostics.Debug.WriteLine(string.Join("\t", constraint.Coefficients));
-            }
             
             /*if (aCount > 0)
             {
@@ -188,11 +192,8 @@ namespace RaikesSimplexService.InsertTeamNameHere
 
             var vector = xb / p1;
             //divide
-            System.Diagnostics.Debug.WriteLine(vector);
             var min = vector.AbsoluteMinimum();
-            System.Diagnostics.Debug.WriteLine("minimum value = " + min);
             var minIndex = vector.AbsoluteMinimumIndex();
-            System.Diagnostics.Debug.WriteLine("index = " + minIndex);
             return minIndex;
 
         }
@@ -254,13 +255,14 @@ namespace RaikesSimplexService.InsertTeamNameHere
             var zVal = zRow.At(index);
             Vector<double> coVector = primeVectors[index];
             double[] b = new double[basicIndices.Length];
-            for (int i = 0; i <= basicIndices.Length; i++)
+            for (int i = 0; i < basicIndices.Length; i++)
             {
                 b[i] = zRow[basicIndices[i]];
             }
             var V = Vector<double>.Build;
             var basicVars = V.DenseOfArray(b);
-            var newCo = zVal - (basicVars * coVector);
+            double vectorMult = basicVars * coVector;
+            double newCo = zVal - vectorMult;
             return newCo;
         }
         

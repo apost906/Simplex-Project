@@ -42,6 +42,11 @@ namespace RaikesSimplexService.DataModel
             Quality = quality;
         }
 
+        public Solution()
+        {
+            // TODO: Complete member initialization
+        }
+
     }
 }
 
