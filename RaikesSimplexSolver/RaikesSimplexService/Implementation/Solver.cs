@@ -24,25 +24,29 @@ namespace RaikesSimplexService.InsertTeamNameHere
             int[] basicVariableIndecies = basicColumnIndecies(model);
             Matrix<double> matrix = convertToMatrix(model);
             Matrix<double> coefficientMatrix = convertToCoefficientsMatrix(model);
-            Vector<double> rhs = matrix.Column(matrix.ColumnCount - 1);
             Vector<double> zRow = matrix.Row(matrix.RowCount - 1);
             Matrix<double> basicMatrix = findBasicMatrix(matrix, basicVariableIndecies);
-            List<Vector<double>> primeVectors = calculatePrimeVectors(basicMatrix.Inverse(), coefficientMatrix);
-            double min = 0;
-            int mindex = -1;
-            for(int i = 0; i < model.Goal.Coefficients.Length; i++) {
-                double c = calculateNewCoefficient(i, zRow, primeVectors, basicVariableIndecies);
-                if (!basicVariableIndecies.Contains(i) && c < 0)
-                {
-                    min = c;
-                    mindex = i;
-                }
-            }
-            if (mindex != -1)
+            int mindex;
+            do
             {
-                int index = findIndexOfSmallestPositive(primeVectors[primeVectors.Count-1], primeVectors[mindex]);
-                basicVariableIndecies[index] = mindex;
-            }
+                List<Vector<double>> primeVectors = calculatePrimeVectors(basicMatrix.Inverse(), coefficientMatrix);
+                double min = 0;
+                mindex = -1;
+                for (int i = 0; i < model.Goal.Coefficients.Length; i++)
+                {
+                    double c = calculateNewCoefficient(i, zRow, primeVectors, basicVariableIndecies);
+                    if (!basicVariableIndecies.Contains(i) && c < 0)
+                    {
+                        min = c;
+                        mindex = i;
+                    }
+                }
+                if (mindex != -1)
+                {
+                    int index = findIndexOfSmallestPositive(primeVectors[primeVectors.Count - 1], primeVectors[mindex]);
+                    basicVariableIndecies[index] = mindex;
+                }
+            } while (mindex != -1);
             
             throw new NotImplementedException();
         }
