@@ -155,7 +155,19 @@ namespace UnitTests
             var v2 = V.DenseOfArray(new[] { 2.0, 2.0, 2.0 });
             var output = target.findIndexOfSmallestPositive(v1, v2);
 
+            //Test SubMatrix finder
+            var M = Matrix<double>.Build;
+            var mm = M.DenseOfArray(new[,] { { 10.0, 20.0, 30.0, 0.0, 1.0, 0.0, 0.0 }, { 40.0, 50.0, 60.0, 1.0, 0.0, 0.0, 0.0 }, { 70.0, 80.0, 90.0, 0.0, 0.0, 1.0, 0.0 }, { 10.0, 20.0, 30.0, 0.0, 0.0, 0.0, 1.0 }});
+            String mat = mm.ToString();
+            mat = mat.Replace("  ", "\t");
+            System.Diagnostics.Debug.WriteLine(mat);
+            var subM = target.findBasicMatrix(mm, new[] { 1.0, 2.0 });
+            System.Diagnostics.Debug.WriteLine(subM);
 
+            double[] array = target.basicColumnIndecies(model);
+            System.Diagnostics.Debug.WriteLine(array[0]);
+            Matrix<double> mmm = target.convertToMatrix(model);
+            System.Diagnostics.Debug.WriteLine(target.findBasicMatrix(mmm, array));
             //Assert
             //commented out below too...
             //CollectionAssert.AreEqual(expected.Decisions, actual.Decisions);
