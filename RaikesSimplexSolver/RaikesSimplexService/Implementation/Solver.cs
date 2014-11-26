@@ -166,17 +166,23 @@ namespace RaikesSimplexService.InsertTeamNameHere
         public double[] basicColumnIndecies(Model model) {
             double[] indecies = new double[model.Constraints.Count];
             int count = 0;
-            for(int i = 0; i < model.Constraints[0].Coefficients.Length) {
+            for (int i = 0; i < model.Constraints[0].Coefficients.Length; i++ )
+            {
                 bool hasOne = false;
                 bool restZero = true;
-                for(int j = 0; j < model.Constraints.Count; j++) {
-                    if(!hasOne && model.Constraints[j].Coefficients[i] == 1) {
+                for (int j = 0; j < model.Constraints.Count; j++)
+                {
+                    if (!hasOne && model.Constraints[j].Coefficients[i] == 1)
+                    {
                         hasOne = true;
-                    } else if(model.Constraints[j].Coefficients[i] != 0) {
+                    }
+                    else if (model.Constraints[j].Coefficients[i] != 0)
+                    {
                         restZero = false;
                     }
                 }
-                if(hasOne && restZero) {
+                if (hasOne && restZero)
+                {
                     indecies[count] = i;
                     count++;
                 }
