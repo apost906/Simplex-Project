@@ -23,20 +23,25 @@ namespace RaikesSimplexService.InsertTeamNameHere
             convertAllInequalities(model);
             double[] basicVariableIndecies = basicColumnIndecies(model);
             Matrix<double> matrix = convertToMatrix(model);
+            Matrix<double> coefficientMatrix = convertToCoefficientsMatrix(model);
             Vector<double> rhs = matrix.Column(matrix.ColumnCount - 1);
             Vector<double> zRow = matrix.Row(matrix.RowCount - 1);
+            Matrix<double> basicMatrix = findBasicMatrix(matrix, basicVariableIndecies);
+            List<Vector<double>> primeVectors = calculatePrimeVectors(basicMatrix.Inverse(), coefficientMatrix);
             double min = 0;
             int mindex = -1;
             for(int i = 0; i < model.Goal.Coefficients.Length; i++) {
-                if (!basicVariableIndecies.Contains(i) && model.Goal.Coefficients[i] < 0)
+                double c = calculateNewCoefficient(i, matrix, basicVariableIndecies);
+                if (!basicVariableIndecies.Contains(i) && c < 0)
                 {
-                    min = model.Goal.Coefficients[i];
+                    min = c;
                     mindex = i;
                 }
             }
             if (mindex != -1)
             {
 
+                findIndexOfSmallestPositive(, );
             }
             
             throw new NotImplementedException();
@@ -210,17 +215,29 @@ namespace RaikesSimplexService.InsertTeamNameHere
                 list.Add(v);
             }
             Matrix<double> m = Matrix<double>.Build.DenseOfColumnVectors(list);
-                   return m;
+            return m;
         }
 
-        public double calculateNewCoefficient(int index, Vector<double> zRow, List<Vector<double>> primeVectors, int[] basicIndicies)
+        public List<Vector<double>> calculatePrimeVectors(Matrix<double> bInv, Matrix<double> coefficientMatrix)
+        {
+            List<Vector<double>> primeVectors = new List<Vector<double>>();
+            for (int i = 0; i < coefficientMatrix.ColumnCount; i++)
+            {
+                Vector<double> v = bInv * coefficientMatrix.Column(i);
+                primeVectors.Add(v);
+            }
+            return primeVectors;
+        }
+
+
+        public double calculateNewCoefficient(int index, Vector<double> zRow, List<Vector<double>> primeVectors, int[] basicIndices)
         {
             var zVal = zRow.At(index);
             Vector<double> coVector = primeVectors[index];
-            double[] b = new double[basicIndicies.Length];
-            for (int i = 0; i <= basicIndicies.Length; i++)
+            double[] b = new double[basicIndices.Length];
+            for (int i = 0; i <= basicIndices.Length; i++)
             {
-                b[i] = zRow[basicIndicies[i]];
+                b[i] = zRow[basicIndices[i]];
             }
             var V = Vector<double>.Build;
             var basicVars = V.DenseOfArray(b);
@@ -228,7 +245,8 @@ namespace RaikesSimplexService.InsertTeamNameHere
             return newCo;
         }
         
-        
+
+
 
     }
 }
