@@ -165,7 +165,7 @@ namespace UnitTests
             System.Diagnostics.Debug.WriteLine(subM);
 
             double[] array = target.basicColumnIndecies(model);
-            System.Diagnostics.Debug.WriteLine(array[0]);
+            System.Diagnostics.Debug.WriteLine(array[0] + " 1: " + array[1] + " 2: " + array[2] + " 3: " + array[3]);
             Matrix<double> mmm = target.convertToMatrix(model);
             System.Diagnostics.Debug.WriteLine(target.findBasicMatrix(mmm, array));
             //Assert

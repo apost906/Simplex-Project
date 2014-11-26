@@ -23,20 +23,25 @@ namespace RaikesSimplexService.InsertTeamNameHere
             convertAllInequalities(model);
             double[] basicVariableIndecies = basicColumnIndecies(model);
             Matrix<double> matrix = convertToMatrix(model);
+            Matrix<double> coefficientMatrix = convertToCoefficientsMatrix(model);
             Vector<double> rhs = matrix.Column(matrix.ColumnCount - 1);
             Vector<double> zRow = matrix.Row(matrix.RowCount - 1);
+            Matrix<double> basicMatrix = findBasicMatrix(matrix, basicVariableIndecies);
+            List<Vector<double>> primeVectors = calculatePrimeVectors(basicMatrix.Inverse(), coefficientMatrix);
             double min = 0;
             int mindex = -1;
             for(int i = 0; i < model.Goal.Coefficients.Length; i++) {
-                if (!basicVariableIndecies.Contains(i) && model.Goal.Coefficients[i] < 0)
+                double c = calculateNewCoefficient(i, matrix, basicVariableIndecies);
+                if (!basicVariableIndecies.Contains(i) && c < 0)
                 {
-                    min = model.Goal.Coefficients[i];
+                    min = c;
                     mindex = i;
                 }
             }
             if (mindex != -1)
             {
 
+                findIndexOfSmallestPositive(, );
             }
             
             throw new NotImplementedException();
@@ -210,6 +215,21 @@ namespace RaikesSimplexService.InsertTeamNameHere
                 list.Add(v);
             }
             Matrix<double> m = Matrix<double>.Build.DenseOfColumnVectors(list);
+            return m;
+        }
+
+        public List<Vector<double>> calculatePrimeVectors(Matrix<double> bInv, Matrix<double> coefficientMatrix)
+        {
+            List<Vector<double>> primeVectors = new List<Vector<double>>();
+            for (int i = 0; i < coefficientMatrix.ColumnCount; i++)
+            {
+                Vector<double> v = bInv * coefficientMatrix.Column(i);
+                primeVectors.Add(v);
+            }
+            return primeVectors;
+        }
+
+
         public double calculateNewCoefficient(int index, Matrix<double> matrix, Vector<double> basic)
         {
             var zVal = matrix.At(matrix.RowCount - 1, index);
@@ -217,10 +237,8 @@ namespace RaikesSimplexService.InsertTeamNameHere
             var newCo = zVal - (basic * coVector);
             return newCo;
         }
-        
 
-            return m;
-        }
+
 
 
     }
