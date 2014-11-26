@@ -84,7 +84,7 @@ namespace RaikesSimplexService.InsertTeamNameHere
            
             foreach (LinearConstraint constraint in model.Constraints)
             {
-                System.Diagnostics.Debug.WriteLine(string.Join("\t", constraint.Coefficients));
+                //System.Diagnostics.Debug.WriteLine(string.Join("\t", constraint.Coefficients));
             }
             
             /*if (aCount > 0)
@@ -154,29 +154,45 @@ namespace RaikesSimplexService.InsertTeamNameHere
                 a[a.Length - 1] = lc.Value;
                 list.Add(a);
             }
-            double[] zRow = new double[model.Goal.Coefficients.Length + 1];
-            model.Goal.Coefficients.CopyTo(zRow, 0);
-            zRow[zRow.Length - 1] = model.Goal.ConstantTerm;
-            list.Add(zRow);
             Matrix<double> m = Matrix<double>.Build.DenseOfRowArrays(list);
 
             return m;
         }
 
+        public int findIndexOfSmallestPositive(Vector<double> xb, Vector<double> p1)
+        {
+
+            var vector = xb / p1;
+            //divide
+            System.Diagnostics.Debug.WriteLine(vector);
+            var min = vector.AbsoluteMinimum();
+            System.Diagnostics.Debug.WriteLine("minimum value = " + min);
+            var minIndex = vector.AbsoluteMinimumIndex();
+            System.Diagnostics.Debug.WriteLine("index = " + minIndex);
+            return minIndex;
+
+        }
+
         public double[] basicColumnIndecies(Model model) {
             double[] indecies = new double[model.Constraints.Count];
             int count = 0;
-            for(int i = 0; i < model.Constraints[0].Coefficients.Length) {
+            for (int i = 0; i < model.Constraints[0].Coefficients.Length; i++)
+            {
                 bool hasOne = false;
                 bool restZero = true;
-                for(int j = 0; j < model.Constraints.Count; j++) {
-                    if(!hasOne && model.Constraints[j].Coefficients[i] == 1) {
+                for (int j = 0; j < model.Constraints.Count; j++)
+                {
+                    if (!hasOne && model.Constraints[j].Coefficients[i] == 1)
+                    {
                         hasOne = true;
-                    } else if(model.Constraints[j].Coefficients[i] != 0) {
+                    }
+                    else if (model.Constraints[j].Coefficients[i] != 0)
+                    {
                         restZero = false;
                     }
                 }
-                if(hasOne && restZero) {
+                if (hasOne && restZero)
+                {
                     indecies[count] = i;
                     count++;
                 }
@@ -184,6 +200,16 @@ namespace RaikesSimplexService.InsertTeamNameHere
             return indecies;
         }
 
+        public Matrix<double> findBasicMatrix(Matrix<double> matrix, double[] indices)
+        {
+            List<Vector<double>> list = new List<Vector<double>>();
+            foreach (int i in indices)
+            {
+                // gets column vector without the zRow coefficient
+                Vector<double> v = matrix.Column(i, 0, matrix.RowCount-1);
+                list.Add(v);
+            }
+            Matrix<double> m = Matrix<double>.Build.DenseOfColumnVectors(list);
         public double calculateNewCoefficient(int index, Matrix<double> matrix, Vector<double> basic)
         {
             var zVal = matrix.At(matrix.RowCount - 1, index);
@@ -193,6 +219,8 @@ namespace RaikesSimplexService.InsertTeamNameHere
         }
         
 
+            return m;
+        }
 
 
     }
