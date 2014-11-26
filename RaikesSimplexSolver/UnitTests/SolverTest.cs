@@ -77,37 +77,30 @@ namespace UnitTests
 
             var lc1 = new LinearConstraint()
             {
-                Coefficients = new double[2] { 8, 12 },
-                Relationship = Relationship.GreaterThanOrEquals,
-                Value = 24
+                Coefficients = new double[2] { 2, 1 },
+                Relationship = Relationship.LessThanOrEquals,
+                Value = 32
             };
 
             var lc2 = new LinearConstraint()
             {
-                Coefficients = new double[2] { 12, 12 },
-                Relationship = Relationship.GreaterThanOrEquals,
-                Value = 36
+                Coefficients = new double[2] { 1, 1 },
+                Relationship = Relationship.LessThanOrEquals,
+                Value = 18
             };
 
             var lc3 = new LinearConstraint()
             {
-                Coefficients = new double[2] { 2, 1 },
-                Relationship = Relationship.GreaterThanOrEquals,
-                Value = 4
-            };
-
-            var lc4 = new LinearConstraint()
-            {
-                Coefficients = new double[2] { 1, 1 },
+                Coefficients = new double[2] { 1, 3 },
                 Relationship = Relationship.LessThanOrEquals,
-                Value = 5
+                Value = 36
             };
 
-            var constraints = new List<LinearConstraint>() { lc1, lc2, lc3, lc4 };
+            var constraints = new List<LinearConstraint>() { lc1, lc2, lc3};
 
             var goal = new Goal()
             {
-                Coefficients = new double[2] { 0.2, 0.3 },
+                Coefficients = new double[2] { 80, 70 },
                 ConstantTerm = 0
             };
 
@@ -120,10 +113,10 @@ namespace UnitTests
 
             var expected = new Solution()
             {
-                Decisions = new double[2] { 3, 0 },
+                Decisions = new double[2] { 14, 4 },
                 Quality = SolutionQuality.Optimal,
                 AlternateSolutionsExist = false,
-                OptimalValue = 0.6
+                OptimalValue = 1400
             };
 
             target.convertAllInequalities(model);
@@ -147,27 +140,6 @@ namespace UnitTests
             matrix = matrix.Replace("  ", "\t");
             System.Diagnostics.Debug.WriteLine(matrix);
 
-
-            //Test find min value of vector division
-            var V = Vector<double>.Build;
-            var v1 = V.DenseOfArray(new[] {10.0, 20.0, 30.0 });
-            var V2 = Vector<double>.Build;
-            var v2 = V.DenseOfArray(new[] { 2.0, 2.0, 2.0 });
-            var output = target.findIndexOfSmallestPositive(v1, v2);
-
-            //Test SubMatrix finder
-            var M = Matrix<double>.Build;
-            var mm = M.DenseOfArray(new[,] { { 10.0, 20.0, 30.0, 0.0, 1.0, 0.0, 0.0 }, { 40.0, 50.0, 60.0, 1.0, 0.0, 0.0, 0.0 }, { 70.0, 80.0, 90.0, 0.0, 0.0, 1.0, 0.0 }, { 10.0, 20.0, 30.0, 0.0, 0.0, 0.0, 1.0 }});
-            String mat = mm.ToString();
-            mat = mat.Replace("  ", "\t");
-            System.Diagnostics.Debug.WriteLine(mat);
-            var subM = target.findBasicMatrix(mm, new[] { 1, 2 });
-            System.Diagnostics.Debug.WriteLine(subM);
-
-            int[] array = target.basicColumnIndecies(model);
-            System.Diagnostics.Debug.WriteLine(array[0] + " 1: " + array[1] + " 2: " + array[2] + " 3: " + array[3]);
-            Matrix<double> mmm = target.convertToMatrix(model);
-            System.Diagnostics.Debug.WriteLine(target.findBasicMatrix(mmm, array));
             //Assert
             //commented out below too...
             //CollectionAssert.AreEqual(expected.Decisions, actual.Decisions);

@@ -19,17 +19,19 @@ namespace RaikesSimplexService.InsertTeamNameHere
         int aCount = 0;
         public Solution Solve(Model model)
         {
-            
+            double[] decision = new double[model.Constraints[0].Coefficients.Length];
+            double optimalValue = 0;
             convertAllInequalities(model);
             int[] basicVariableIndecies = basicColumnIndecies(model);
             Matrix<double> matrix = convertToMatrix(model);
             Matrix<double> coefficientMatrix = convertToCoefficientsMatrix(model);
             Vector<double> zRow = matrix.Row(matrix.RowCount - 1);
             Matrix<double> basicMatrix = findBasicMatrix(matrix, basicVariableIndecies);
+            List<Vector<double>> primeVectors = new List<Vector<double>>();
             int mindex;
             do
             {
-                List<Vector<double>> primeVectors = calculatePrimeVectors(basicMatrix.Inverse(), coefficientMatrix);
+                primeVectors = calculatePrimeVectors(basicMatrix.Inverse(), coefficientMatrix);
                 double min = 0;
                 mindex = -1;
                 for (int i = 0; i < model.Goal.Coefficients.Length; i++)
@@ -47,8 +49,21 @@ namespace RaikesSimplexService.InsertTeamNameHere
                     basicVariableIndecies[index] = mindex;
                 }
             } while (mindex != -1);
-            
-            throw new NotImplementedException();
+
+            foreach(int i in basicVariableIndecies) {
+                double xbPrime = primeVectors[primeVectors.Count-1].At(i);
+                if(i < decision.Length) {
+                    decision[i] = xbPrime;
+                }
+            }
+
+            for(int i = 0; i < decision.Length; i++) {
+                optimalValue += decision[i] * zRow[i];
+            }
+
+  //          Solution s = new Solution(decision, optimalValue, false, SolutionQuality.Optimal);
+
+            return null;
         }
 
         public void convertAllInequalities(Model model){
