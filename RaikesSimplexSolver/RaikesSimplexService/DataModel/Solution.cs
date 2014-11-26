@@ -33,6 +33,15 @@ namespace RaikesSimplexService.DataModel
         [DataMember]
         public SolutionQuality Quality { get; set; }
         
+
+        public Solution(double[] decisions, double optimalValue, bool alternateSolutionsExist, SolutionQuality quality)
+        {
+            Decisions = decisions;
+            OptimalValue = optimalValue;
+            AlternateSolutionsExist = alternateSolutionsExist;
+            Quality = quality;
+        }
+
     }
 }
 
