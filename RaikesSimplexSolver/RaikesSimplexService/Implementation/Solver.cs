@@ -230,14 +230,21 @@ namespace RaikesSimplexService.InsertTeamNameHere
         }
 
 
-        public double calculateNewCoefficient(int index, Matrix<double> matrix, Vector<double> basic)
+        public double calculateNewCoefficient(int index, Vector<double> zRow, List<Vector<double>> primeVectors, int[] basicIndices)
         {
-            var zVal = matrix.At(matrix.RowCount - 1, index);
-            Vector<double> coVector = matrix.Column(index, 0, matrix.RowCount - 1);
-            var newCo = zVal - (basic * coVector);
+            var zVal = zRow.At(index);
+            Vector<double> coVector = primeVectors[index];
+            double[] b = new double[basicIndices.Length];
+            for (int i = 0; i <= basicIndices.Length; i++)
+            {
+                b[i] = zRow[basicIndices[i]];
+            }
+            var V = Vector<double>.Build;
+            var basicVars = V.DenseOfArray(b);
+            var newCo = zVal - (basicVars * coVector);
             return newCo;
         }
-
+        
 
 
 
