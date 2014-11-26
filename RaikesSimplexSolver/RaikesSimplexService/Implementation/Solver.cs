@@ -210,6 +210,9 @@ namespace RaikesSimplexService.InsertTeamNameHere
                 list.Add(v);
             }
             Matrix<double> m = Matrix<double>.Build.DenseOfColumnVectors(list);
+                   return m;
+        }
+
         public double calculateNewCoefficient(int index, Matrix<double> matrix, Vector<double> basic)
         {
             var zVal = matrix.At(matrix.RowCount - 1, index);
@@ -218,9 +221,6 @@ namespace RaikesSimplexService.InsertTeamNameHere
             return newCo;
         }
         
-
-            return m;
-        }
 
 
     }
