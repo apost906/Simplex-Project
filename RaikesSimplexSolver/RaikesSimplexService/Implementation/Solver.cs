@@ -19,6 +19,7 @@ namespace RaikesSimplexService.InsertTeamNameHere
         int aCount = 0;
         public Solution Solve(Model model)
         {
+            
             convertAllInequalities(model);
             double[] basicVariableIndecies = basicColumnIndecies(model);
             Matrix<double> matrix = convertToMatrix(model);
@@ -209,6 +210,14 @@ namespace RaikesSimplexService.InsertTeamNameHere
                 list.Add(v);
             }
             Matrix<double> m = Matrix<double>.Build.DenseOfColumnVectors(list);
+        public double calculateNewCoefficient(int index, Matrix<double> matrix, Vector<double> basic)
+        {
+            var zVal = matrix.At(matrix.RowCount - 1, index);
+            Vector<double> coVector = matrix.Column(index, 0, matrix.RowCount - 1);
+            var newCo = zVal - (basic * coVector);
+            return newCo;
+        }
+        
 
             return m;
         }
