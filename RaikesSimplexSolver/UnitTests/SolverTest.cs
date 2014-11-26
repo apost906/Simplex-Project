@@ -130,10 +130,10 @@ namespace UnitTests
      //       System.Diagnostics.Debug.WriteLine(matrix);
 
             Solution s = target.Solve(model);
-
-            System.Diagnostics.Debug.WriteLine("d0 " + s.Decisions[0]);
-            System.Diagnostics.Debug.WriteLine("d1 " + s.Decisions[1]);
-            System.Diagnostics.Debug.WriteLine("O " + s.OptimalValue);
+            System.Diagnostics.Debug.WriteLine("Optimal Solution: ");
+            System.Diagnostics.Debug.WriteLine("x1 = " + s.Decisions[0]);
+            System.Diagnostics.Debug.WriteLine("x2 = " + s.Decisions[1]);
+            System.Diagnostics.Debug.WriteLine("Z = " + s.OptimalValue);
 
             //Assert
             //commented out below too...

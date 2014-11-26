@@ -59,7 +59,7 @@ namespace RaikesSimplexService.InsertTeamNameHere
             }
 
             for(int i = 0; i < decision.Length; i++) {
-                optimalValue += decision[i] * zRow[i];
+                optimalValue += decision[i] * zRow[i] * -1;
             }
 
             Solution s = new Solution(decision, optimalValue, false, SolutionQuality.Optimal);
