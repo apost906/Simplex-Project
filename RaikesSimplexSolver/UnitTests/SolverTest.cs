@@ -77,30 +77,30 @@ namespace UnitTests
 
             var lc1 = new LinearConstraint()
             {
-                Coefficients = new double[2] { 2, 1 },
+                Coefficients = new double[2] { 1, 1 },
                 Relationship = Relationship.LessThanOrEquals,
-                Value = 32
+                Value = 35
             };
 
             var lc2 = new LinearConstraint()
             {
-                Coefficients = new double[2] { 1, 1 },
+                Coefficients = new double[2] { 1, 2 },
                 Relationship = Relationship.LessThanOrEquals,
-                Value = 18
+                Value = 38
             };
 
             var lc3 = new LinearConstraint()
             {
-                Coefficients = new double[2] { 1, 3 },
+                Coefficients = new double[2] { 2, 2 },
                 Relationship = Relationship.LessThanOrEquals,
-                Value = 36
+                Value = 50
             };
 
             var constraints = new List<LinearConstraint>() { lc1, lc2, lc3};
 
             var goal = new Goal()
             {
-                Coefficients = new double[2] { 80, 70 },
+                Coefficients = new double[2] { 350, 450 },
                 ConstantTerm = 0
             };
 
@@ -113,10 +113,10 @@ namespace UnitTests
 
             var expected = new Solution()
             {
-                Decisions = new double[2] { 14, 4 },
+                Decisions = new double[2] { 12, 13 },
                 Quality = SolutionQuality.Optimal,
                 AlternateSolutionsExist = false,
-                OptimalValue = 1400
+                OptimalValue = 10050
             };
 
        //     target.convertAllInequalities(model);

@@ -70,11 +70,11 @@ namespace RaikesSimplexService.InsertTeamNameHere
         public void convertAllInequalities(Model model){
             foreach (LinearConstraint lc in model.Constraints)
             {
-                if (lc.Relationship == Relationship.LessThanOrEquals)
+                if (lc.Relationship.Equals(Relationship.LessThanOrEquals))
                 {
                     sCount++;
                 }
-                else if (lc.Relationship == Relationship.GreaterThanOrEquals)
+                else if (lc.Relationship.Equals(Relationship.GreaterThanOrEquals))
                 {
                     sCount++;
                     aCount++;
@@ -95,7 +95,7 @@ namespace RaikesSimplexService.InsertTeamNameHere
                 LinearConstraint newLC = convertInequality(constraint, sCount, sOffset, aOffset, totalLength);
                 newConstraints.Add(newLC);
                 sOffset++;
-                if (constraint.Relationship == Relationship.GreaterThanOrEquals)
+                if (constraint.Relationship.Equals(Relationship.GreaterThanOrEquals))
                 {
                     aOffset++;
                     for (int i = 0; i < newLC.Coefficients.Length; i++)
@@ -141,11 +141,11 @@ namespace RaikesSimplexService.InsertTeamNameHere
             };
             newConstraint.Coefficients.SetValue(lc.Coefficients[0], 0);
             newConstraint.Coefficients.SetValue(lc.Coefficients[1], 1);
-            if (lc.Relationship == Relationship.LessThanOrEquals)
+            if (lc.Relationship.Equals(Relationship.LessThanOrEquals))
             {
                 newConstraint.Coefficients.SetValue(1, sOffset + 2);
             }
-            else if (lc.Relationship == Relationship.GreaterThanOrEquals)
+            else if (lc.Relationship.Equals(Relationship.GreaterThanOrEquals))
             {
                 newConstraint.Coefficients.SetValue(-1, sOffset + 2);
                 newConstraint.Coefficients.SetValue(1, aOffset + 2 + sCount);
