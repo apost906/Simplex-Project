@@ -25,12 +25,12 @@ namespace RaikesSimplexService.InsertTeamNameHere
             int[] basicVariableIndecies = basicColumnIndecies(model);
             Matrix<double> matrix = convertToMatrix(model);
             Matrix<double> coefficientMatrix = convertToCoefficientsMatrix(model);
-            Vector<double> zRow = matrix.Row(matrix.RowCount - 1);
-            Matrix<double> basicMatrix = findBasicMatrix(matrix, basicVariableIndecies);
+            Vector<double> zRow = matrix.Row(matrix.RowCount - 1);      
             List<Vector<double>> primeVectors = new List<Vector<double>>();
             int mindex;
             do
             {
+                Matrix<double> basicMatrix = findBasicMatrix(matrix, basicVariableIndecies);
                 primeVectors = calculatePrimeVectors(basicMatrix.Inverse(), coefficientMatrix);
                 double min = 0;
                 mindex = -1;
@@ -50,11 +50,11 @@ namespace RaikesSimplexService.InsertTeamNameHere
                 }
             } while (mindex != -1);
 
-            foreach(int i in basicVariableIndecies) {
+            for(int i = 0; i < basicVariableIndecies.Length; i++) {
                 
-                if(i < decision.Length) {
+                if(basicVariableIndecies[i] < decision.Length) {
                     double xbPrime = primeVectors[primeVectors.Count-1].At(i);
-                    decision[i] = xbPrime;
+                    decision[basicVariableIndecies[i]] = xbPrime;
                 }
             }
 
