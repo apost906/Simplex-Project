@@ -14,27 +14,27 @@ namespace RaikesSimplexService.InsertTeamNameHere
     
     public class Solver : ISolver
     {
-
-        int sCount = 0;
-        int aCount = 0;
         public Solution Solve(Model model)
         {
             double[] decision = new double[model.Constraints[0].Coefficients.Length];
             double optimalValue = 0;
             convertAllInequalities(model);
             int[] basicVariableIndecies = basicColumnIndecies(model);
-            if (aCount > 0)
+            bool twoPhase = isTwoPhase(model);
+            reduce(model, basicVariableIndecies);
+
+            if (twoPhase)
             {
+                // Ashley's method to remove wRow and make zGoal
+                reduce(model, basicVariableIndecies);
+
+
                 // add zRow to coefficients
                 // make wRow the new goal
                 // reduce
                 // remove wRow
                 // make last of coefficients (zRow) the new goal
                 // reduce
-            }
-            else
-            {
-                reduce(model, basicVariableIndecies);
             }
 
             Matrix<double> matrix = convertToMatrix(model);
@@ -60,16 +60,18 @@ namespace RaikesSimplexService.InsertTeamNameHere
         }
 
         public void convertAllInequalities(Model model){
+            int sCount = 0;
+            int aCount = 0;
             foreach (LinearConstraint lc in model.Constraints)
             {
-                if (lc.Relationship.Equals(Relationship.LessThanOrEquals))
-                {
-                    sCount++;
-                }
-                else if (lc.Relationship.Equals(Relationship.GreaterThanOrEquals))
+                if (lc.Relationship.Equals(Relationship.GreaterThanOrEquals))
                 {
                     sCount++;
                     aCount++;
+                }
+                else
+                {
+                    sCount++;
                 }
             }
 
@@ -82,6 +84,10 @@ namespace RaikesSimplexService.InsertTeamNameHere
                 Coefficients = new double[totalLength],
                 ConstantTerm = 0
             };
+            if (aCount > 0)
+            {
+                // do Ashley's method to add zRow to Constraints
+            }
             foreach (LinearConstraint constraint in model.Constraints)
             {
                 LinearConstraint newLC = convertInequality(constraint, sCount, sOffset, aOffset, totalLength);
@@ -257,6 +263,17 @@ namespace RaikesSimplexService.InsertTeamNameHere
                     basicVariableIndecies[index] = mindex;
                 }
             } while (mindex != -1);
+        }
+
+        private bool isTwoPhase(Model model)
+        {
+            foreach(LinearConstraint lc in model.Constraints) {
+                if (lc.Relationship.Equals(Relationship.GreaterThanOrEquals))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
 
