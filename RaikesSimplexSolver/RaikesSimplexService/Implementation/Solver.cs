@@ -23,32 +23,24 @@ namespace RaikesSimplexService.InsertTeamNameHere
             double optimalValue = 0;
             convertAllInequalities(model);
             int[] basicVariableIndecies = basicColumnIndecies(model);
-            Matrix<double> matrix = convertToMatrix(model);
-            Matrix<double> coefficientMatrix = convertToCoefficientsMatrix(model);
-            Vector<double> zRow = matrix.Row(matrix.RowCount - 1);      
-            List<Vector<double>> primeVectors = new List<Vector<double>>();
-            int mindex;
-            do
+            if (aCount > 0)
             {
-                Matrix<double> basicMatrix = findBasicMatrix(matrix, basicVariableIndecies);
-                primeVectors = calculatePrimeVectors(basicMatrix.Inverse(), coefficientMatrix);
-                double min = 0;
-                mindex = -1;
-                for (int i = 0; i < model.Goal.Coefficients.Length; i++)
-                {
-                    double c = calculateNewCoefficient(i, zRow, primeVectors, basicVariableIndecies);
-                    if (!basicVariableIndecies.Contains(i) && c < 0)
-                    {
-                        min = c;
-                        mindex = i;
-                    }
-                }
-                if (mindex != -1)
-                {
-                    int index = findIndexOfSmallestPositive(primeVectors[primeVectors.Count - 1], primeVectors[mindex]);
-                    basicVariableIndecies[index] = mindex;
-                }
-            } while (mindex != -1);
+                // add zRow to coefficients
+                // make wRow the new goal
+                // reduce
+                // remove wRow
+                // make last of coefficients (zRow) the new goal
+                // reduce
+            }
+            else
+            {
+                reduce(model, basicVariableIndecies);
+            }
+
+            Matrix<double> matrix = convertToMatrix(model);
+            Vector<double> zRow = matrix.Row(matrix.RowCount - 1);
+            Matrix<double> basicMatrix = findBasicMatrix(matrix, basicVariableIndecies);
+            List<Vector<double>> primeVectors = calculatePrimeVectors(basicMatrix.Inverse(), matrix);
 
             for(int i = 0; i < basicVariableIndecies.Length; i++) {
                 
@@ -114,20 +106,6 @@ namespace RaikesSimplexService.InsertTeamNameHere
                 }
             }
             model.setConstraints(newConstraints);
-            
-            /*if (aCount > 0)
-            {
-                String summary = "";
-                for (int i = 0; i < totalLength - aCount - 1; i++)
-                {
-                    summary += (-1 * wGoal.Coefficients[i]) + "\t";
-                }
-                for (int i = totalLength - aCount - 1; i < totalLength; i++)
-                {
-                    summary += wGoal.Coefficients[i] + "\t";
-                }
-                System.Diagnostics.Debug.WriteLine(summary);
-            }*/
             model.setGoal(wGoal);
         }
 
@@ -167,21 +145,6 @@ namespace RaikesSimplexService.InsertTeamNameHere
             model.Goal.Coefficients.CopyTo(zRow, 0);
             zRow[zRow.Length - 1] = model.Goal.ConstantTerm;
             list.Add(zRow);
-            Matrix<double> m = Matrix<double>.Build.DenseOfRowArrays(list);
-
-            return m;
-        }
-
-        public Matrix<double> convertToCoefficientsMatrix(Model model)
-        {
-            List<double[]> list = new List<double[]>();
-            foreach (LinearConstraint lc in model.Constraints)
-            {
-                double[] a = new double[lc.Coefficients.Length + 1];
-                lc.Coefficients.CopyTo(a, 0);
-                a[a.Length - 1] = lc.Value;
-                list.Add(a);
-            }
             Matrix<double> m = Matrix<double>.Build.DenseOfRowArrays(list);
 
             return m;
@@ -243,7 +206,7 @@ namespace RaikesSimplexService.InsertTeamNameHere
             List<Vector<double>> primeVectors = new List<Vector<double>>();
             for (int i = 0; i < coefficientMatrix.ColumnCount; i++)
             {
-                Vector<double> v = bInv * coefficientMatrix.Column(i);
+                Vector<double> v = bInv * coefficientMatrix.Column(i, 0, coefficientMatrix.RowCount-1);
                 primeVectors.Add(v);
             }
             return primeVectors;
@@ -265,8 +228,36 @@ namespace RaikesSimplexService.InsertTeamNameHere
             double newCo = zVal - vectorMult;
             return newCo;
         }
-        
 
+        public void reduce(Model model, int[] basicVariableIndecies)
+        {
+            Matrix<double> matrix = convertToMatrix(model);
+            List<Vector<double>> primeVectors = new List<Vector<double>>();
+            Vector<double> zRow = matrix.Row(matrix.RowCount - 1);     
+            int mindex = -1;
+
+            do
+            {
+                Matrix<double> basicMatrix = findBasicMatrix(matrix, basicVariableIndecies);
+                primeVectors = calculatePrimeVectors(basicMatrix.Inverse(), matrix);
+                double min = 0;
+                mindex = -1;
+                for (int i = 0; i < model.Goal.Coefficients.Length; i++)
+                {
+                    double c = calculateNewCoefficient(i, zRow, primeVectors, basicVariableIndecies);
+                    if (!basicVariableIndecies.Contains(i) && c < 0)
+                    {
+                        min = c;
+                        mindex = i;
+                    }
+                }
+                if (mindex != -1)
+                {
+                    int index = findIndexOfSmallestPositive(primeVectors[primeVectors.Count - 1], primeVectors[mindex]);
+                    basicVariableIndecies[index] = mindex;
+                }
+            } while (mindex != -1);
+        }
 
 
     }
