@@ -270,7 +270,7 @@ namespace RaikesSimplexService.InsertTeamNameHere
                 ConstantTerm = model.Constraints[model.Constraints.Count - 1].Value
             };
             model.setGoal(zGoal);
-
+             
             model.Constraints.RemoveAt(model.Constraints.Count - 1);
         }
 
