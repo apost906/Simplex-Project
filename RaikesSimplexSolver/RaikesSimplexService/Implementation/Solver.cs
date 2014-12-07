@@ -259,6 +259,31 @@ namespace RaikesSimplexService.InsertTeamNameHere
             } while (mindex != -1);
         }
 
+        //Remove the W Row by:
+        //a) making goal = the Z Row
+        //b) removing the Z Row from the coefficient matrix
+        public void removeWRow(Model model)
+        {
+            var zGoal = new Goal()
+            {
+                Coefficients = model.Constraints[model.Constraints.Count - 1].Coefficients,
+                ConstantTerm = model.Constraints[model.Constraints.Count - 1].Value
+            };
+            model.setGoal(zGoal);
+
+            model.Constraints.RemoveAt(model.Constraints.Count - 1);
+        }
+
+        public void addZtoCoeffMatrix(Model model)
+        {
+            var zRow = new LinearConstraint()
+            {
+                Coefficients = model.Goal.Coefficients,
+                Value = model.Goal.ConstantTerm
+            };
+            model.Constraints.Add(zRow);
+        }
+
 
     }
 }
