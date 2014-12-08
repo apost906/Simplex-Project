@@ -18,14 +18,15 @@ namespace RaikesSimplexService.InsertTeamNameHere
         {
             double[] decision = new double[model.Constraints[0].Coefficients.Length];
             double optimalValue = 0;
+            int aCols = numACol(model);
             convertAllInequalities(model);
             int[] basicVariableIndecies = basicColumnIndecies(model);
-            bool twoPhase = isTwoPhase(model);
             reduce(model, basicVariableIndecies);
 
-            if (twoPhase)
+            if (aCols > 0)
             {
-                removeWRow(model);
+                removeWRow(model, aCols);
+                basicVariableIndecies = basicColumnIndecies(model);
                 reduce(model, basicVariableIndecies);
 
 
@@ -96,7 +97,7 @@ namespace RaikesSimplexService.InsertTeamNameHere
                 if (constraint.Relationship.Equals(Relationship.GreaterThanOrEquals))
                 {
                     aOffset++;
-                    for (int i = 0; i < newLC.Coefficients.Length; i++)
+                    for (int i = 0; i < newLC.Coefficients.Length-aCount; i++)
                     {
                         wGoal.Coefficients[i] += newLC.Coefficients[i];
                     }
@@ -207,7 +208,8 @@ namespace RaikesSimplexService.InsertTeamNameHere
             List<Vector<double>> primeVectors = new List<Vector<double>>();
             for (int i = 0; i < coefficientMatrix.ColumnCount; i++)
             {
-                Vector<double> v = bInv * coefficientMatrix.Column(i, 0, coefficientMatrix.RowCount-1);
+                Vector<double> c = coefficientMatrix.Column(i, 0, coefficientMatrix.RowCount - 1);
+                Vector<double> v = bInv * c;
                 primeVectors.Add(v);
             }
             return primeVectors;
@@ -263,7 +265,7 @@ namespace RaikesSimplexService.InsertTeamNameHere
         //Remove the W Row by:
         //a) making goal = the Z Row
         //b) removing the Z Row from the coefficient matrix
-        public void removeWRow(Model model)
+        public void removeWRow(Model model, int aCols)
         {
             var zGoal = new Goal()
             {
@@ -272,8 +274,18 @@ namespace RaikesSimplexService.InsertTeamNameHere
             };
             model.setGoal(zGoal);
             negateZ(model);
-             
-            model.Constraints.RemoveAt(model.Constraints.Count - 1);
+
+
+            foreach (LinearConstraint lc in model.Constraints)
+            {
+                double[] coefficients = new double[lc.Coefficients.Length-aCols];
+                for(int i = 0; i < lc.Coefficients.Length - aCols; i++){
+                    coefficients[i] = lc.Coefficients[i];
+                }
+                lc.Coefficients = coefficients;
+            }
+
+                model.Constraints.RemoveAt(model.Constraints.Count - 1);
         }
 
         public void addZtoCoeffMatrix(Model model)
@@ -286,15 +298,16 @@ namespace RaikesSimplexService.InsertTeamNameHere
             model.Constraints.Add(zRow);
         }
 
-        private bool isTwoPhase(Model model)
+        private int numACol(Model model)
         {
+            int aCols = 0;
             foreach(LinearConstraint lc in model.Constraints) {
                 if (lc.Relationship.Equals(Relationship.GreaterThanOrEquals))
                 {
-                    return true;
+                    aCols++;
                 }
             }
-            return false;
+            return aCols;
         }
 
         private void negateZ(Model model)
