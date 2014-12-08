@@ -72,6 +72,7 @@ namespace UnitTests
         [TestMethod()]
         public void Test1()
         {
+            #region Arrange
             var target = new Solver();
 
             var lc1 = new LinearConstraint()
@@ -95,7 +96,7 @@ namespace UnitTests
                 Value = 50
             };
 
-            var constraints = new List<LinearConstraint>() { lc1, lc2, lc3 };
+            var constraints = new List<LinearConstraint>() { lc1, lc2, lc3};
 
             var goal = new Goal()
             {
@@ -118,15 +119,15 @@ namespace UnitTests
                 OptimalValue = 10050
             };
 
-            //     target.convertAllInequalities(model);
+       //     target.convertAllInequalities(model);
 
-
-            //     Matrix<double> m = target.convertToMatrix(model);
+           
+       //     Matrix<double> m = target.convertToMatrix(model);
 
             //Print the Matrix!
-            //         String matrix = m.ToString();
-            //        matrix = matrix.Replace("  ", "\t");
-            //       System.Diagnostics.Debug.WriteLine(matrix);
+   //         String matrix = m.ToString();
+    //        matrix = matrix.Replace("  ", "\t");
+     //       System.Diagnostics.Debug.WriteLine(matrix);
 
             Solution s = target.Solve(model);
             System.Diagnostics.Debug.WriteLine("Optimal Solution: ");
@@ -140,11 +141,13 @@ namespace UnitTests
             //Assert.AreEqual(expected.Quality, actual.Quality);
             //Assert.AreEqual(expected.AlternateSolutionsExist, actual.AlternateSolutionsExist);
             //var actual = target.Solve(model);
-        }
+           }
+            #endregion
 
         [TestMethod()]
         public void Test2()
         {
+            #region Arrange
             var target = new Solver();
 
             var lc1 = new LinearConstraint()
@@ -191,176 +194,30 @@ namespace UnitTests
                 OptimalValue = 6
             };
 
-            Solution s = target.Solve(model);
-            System.Diagnostics.Debug.WriteLine("Optimal Solution: ");
-            System.Diagnostics.Debug.WriteLine("x1 = " + s.Decisions[0]);
-            System.Diagnostics.Debug.WriteLine("x2 = " + s.Decisions[1]);
-            System.Diagnostics.Debug.WriteLine("Z = " + s.OptimalValue);
-
-        }
+            //     target.convertAllInequalities(model);
 
 
-        [TestMethod()]
-        public void Test3()
-        {
-            var target = new Solver();
+            //     Matrix<double> m = target.convertToMatrix(model);
 
-            var lc1 = new LinearConstraint()
-            {
-                Coefficients = new double[2] { 1, 1 },
-                Relationship = Relationship.GreaterThanOrEquals,
-                Value = 1
-            };
-
-            var lc2 = new LinearConstraint()
-            {
-                Coefficients = new double[2] { 2, -1 },
-                Relationship = Relationship.GreaterThanOrEquals,
-                Value = 1
-            };
-
-            var lc3 = new LinearConstraint()
-            {
-                Coefficients = new double[2] { 0, 3 },
-                Relationship = Relationship.LessThanOrEquals,
-                Value = 2
-            };
-
-            var constraints = new List<LinearConstraint>() { lc1, lc2, lc3 };
-
-            var goal = new Goal()
-            {
-                Coefficients = new double[2] { 6, 3 },
-                ConstantTerm = 0
-            };
-
-            var model = new Model()
-            {
-                Constraints = constraints,
-                Goal = goal,
-                GoalKind = GoalKind.Minimize
-            };
-
-            var expected = new Solution()
-            {
-                Decisions = new double[2] { (2 / 3), (1 / 3) },
-                Quality = SolutionQuality.Optimal,
-                AlternateSolutionsExist = false,
-                OptimalValue = 5
-            };
+            //Print the Matrix!
+            //         String matrix = m.ToString();
+            //        matrix = matrix.Replace("  ", "\t");
+            //       System.Diagnostics.Debug.WriteLine(matrix);
 
             Solution s = target.Solve(model);
             System.Diagnostics.Debug.WriteLine("Optimal Solution: ");
             System.Diagnostics.Debug.WriteLine("x1 = " + s.Decisions[0]);
             System.Diagnostics.Debug.WriteLine("x2 = " + s.Decisions[1]);
             System.Diagnostics.Debug.WriteLine("Z = " + s.OptimalValue);
+
+            //Assert
+            //commented out below too...
+            //CollectionAssert.AreEqual(expected.Decisions, actual.Decisions);
+            //Assert.AreEqual(expected.Quality, actual.Quality);
+            //Assert.AreEqual(expected.AlternateSolutionsExist, actual.AlternateSolutionsExist);
+            //var actual = target.Solve(model);
         }
-
-        [TestMethod()]
-        public void Test4()
-        {
-            var target = new Solver();
-
-            var lc1 = new LinearConstraint()
-            {
-                Coefficients = new double[3] { 1, 1, 1 },
-                Relationship = Relationship.LessThanOrEquals,
-                Value = 40
-            };
-
-            var lc2 = new LinearConstraint()
-            {
-                Coefficients = new double[3] { 2, 1, -1 },
-                Relationship = Relationship.GreaterThanOrEquals,
-                Value = 10
-            };
-
-            var lc3 = new LinearConstraint()
-            {
-                Coefficients = new double[3] { 0, -1, 1 },
-                Relationship = Relationship.GreaterThanOrEquals,
-                Value = 10
-            };
-
-            var constraints = new List<LinearConstraint>() { lc1, lc2, lc3 };
-
-            var goal = new Goal()
-            {
-                Coefficients = new double[3] { 2, 3, 1 },
-                ConstantTerm = 0
-            };
-
-            var model = new Model()
-            {
-                Constraints = constraints,
-                Goal = goal,
-                GoalKind = GoalKind.Minimize
-            };
-
-            var expected = new Solution()
-            {
-                Decisions = new double[3] { 10, 10, 20 },
-                Quality = SolutionQuality.Optimal,
-                AlternateSolutionsExist = false,
-                OptimalValue = 70
-            };
-
-            Solution s = target.Solve(model);
-            System.Diagnostics.Debug.WriteLine("Optimal Solution: ");
-            System.Diagnostics.Debug.WriteLine("x1 = " + s.Decisions[0]);
-            System.Diagnostics.Debug.WriteLine("x2 = " + s.Decisions[1]);
-            System.Diagnostics.Debug.WriteLine("x3 = " + s.Decisions[2]);
-            System.Diagnostics.Debug.WriteLine("Z = " + s.OptimalValue);
-        }
-
-
-        [TestMethod()]
-        public void Test5()
-        {
-            var target = new Solver();
-
-            var lc1 = new LinearConstraint()
-            {
-                Coefficients = new double[2] { -1, 1 },
-                Relationship = Relationship.Equals,
-                Value = 0
-            };
-
-            var lc2 = new LinearConstraint()
-            {
-                Coefficients = new double[2] { 1, 1 },
-                Relationship = Relationship.LessThanOrEquals,
-                Value = 2
-            };
-
-            var constraints = new List<LinearConstraint>() { lc1, lc2 };
-
-            var goal = new Goal()
-            {
-                Coefficients = new double[2] { 1, 1 },
-                ConstantTerm = 0
-            };
-
-            var model = new Model()
-            {
-                Constraints = constraints,
-                Goal = goal,
-                GoalKind = GoalKind.Minimize
-            };
-
-            var expected = new Solution()
-            {
-                Decisions = new double[2] { 1, 1 },
-                Quality = SolutionQuality.Optimal,
-                AlternateSolutionsExist = false,
-                OptimalValue = 2
-            };
-
-            Solution s = target.Solve(model);
-            System.Diagnostics.Debug.WriteLine("Optimal Solution: ");
-            System.Diagnostics.Debug.WriteLine("x1 = " + s.Decisions[0]);
-            System.Diagnostics.Debug.WriteLine("x2 = " + s.Decisions[1]);
-            System.Diagnostics.Debug.WriteLine("Z = " + s.OptimalValue);
-        }
+            #endregion
     }
-}  
+  
+}
