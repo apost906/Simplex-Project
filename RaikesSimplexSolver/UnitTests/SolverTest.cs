@@ -70,7 +70,7 @@ namespace UnitTests
         ///A test for Solve
         ///</summary>
         [TestMethod()]
-        public void Test1()
+        public void Test1() //2nd example on Ashu's revised simplex ppt
         {
             var target = new Solver();
 
@@ -143,7 +143,7 @@ namespace UnitTests
         }
 
         [TestMethod()]
-        public void Test2()
+        public void Test2() //hw 4 #2
         {
             var target = new Solver();
 
@@ -180,7 +180,7 @@ namespace UnitTests
             {
                 Constraints = constraints,
                 Goal = goal,
-                GoalKind = GoalKind.Minimize
+                GoalKind = GoalKind.Maximize
             };
 
             var expected = new Solution()
@@ -201,7 +201,7 @@ namespace UnitTests
 
 
         [TestMethod()]
-        public void Test3()
+        public void Test3() //hw 4 #1
         {
             var target = new Solver();
 
@@ -257,7 +257,7 @@ namespace UnitTests
         }
 
         [TestMethod()]
-        public void Test4()
+        public void Test4() //hw4 #3
         {
             var target = new Solver();
 
@@ -315,7 +315,7 @@ namespace UnitTests
 
 
         [TestMethod()]
-        public void Test5()
+        public void Test5() //one from FB that broke everything (has an equals relationship)
         {
             var target = new Solver();
 
@@ -345,7 +345,7 @@ namespace UnitTests
             {
                 Constraints = constraints,
                 Goal = goal,
-                GoalKind = GoalKind.Minimize
+                GoalKind = GoalKind.Maximize
             };
 
             var expected = new Solution()
