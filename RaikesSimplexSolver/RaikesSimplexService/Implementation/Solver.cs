@@ -62,7 +62,7 @@ namespace RaikesSimplexService.InsertTeamNameHere
                     sCount++;
                     aCount++;
                 }
-                else
+                else if(lc.Relationship.Equals(Relationship.LessThanOrEquals))
                 {
                     sCount++;
                 }
@@ -85,15 +85,19 @@ namespace RaikesSimplexService.InsertTeamNameHere
             {
                 LinearConstraint newLC = convertInequality(constraint, sCount, sOffset, aOffset, totalLength);
                 newConstraints.Add(newLC);
-                sOffset++;
                 if (constraint.Relationship.Equals(Relationship.GreaterThanOrEquals))
                 {
+                    sOffset++;
                     aOffset++;
                     for (int i = 0; i < newLC.Coefficients.Length-aCount; i++)
                     {
                         wGoal.Coefficients[i] += newLC.Coefficients[i];
                     }
                     wGoal.ConstantTerm += constraint.Value;
+                }
+                else
+                {
+                    sOffset++;
                 }
                 
             }
