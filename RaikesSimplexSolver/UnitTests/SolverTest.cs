@@ -321,23 +321,30 @@ namespace UnitTests
 
             var lc1 = new LinearConstraint()
             {
-                Coefficients = new double[2] { -1, 1 },
-                Relationship = Relationship.Equals,
-                Value = 0
+                Coefficients = new double[2] { 1, 1 },
+                Relationship = Relationship.GreaterThanOrEquals,
+                Value = 1
             };
 
             var lc2 = new LinearConstraint()
             {
-                Coefficients = new double[2] { 1, 1 },
+                Coefficients = new double[2] { 2, -1 },
+                Relationship = Relationship.GreaterThanOrEquals,
+                Value = 1
+            };
+
+            var lc3 = new LinearConstraint()
+            {
+                Coefficients = new double[2] { 0, 3 },
                 Relationship = Relationship.LessThanOrEquals,
                 Value = 2
             };
 
-            var constraints = new List<LinearConstraint>() { lc1, lc2 };
+            var constraints = new List<LinearConstraint>() { lc1, lc2, lc3 };
 
             var goal = new Goal()
             {
-                Coefficients = new double[2] { 1, 1 },
+                Coefficients = new double[2] { 6, 3 },
                 ConstantTerm = 0
             };
 
@@ -350,10 +357,10 @@ namespace UnitTests
 
             var expected = new Solution()
             {
-                Decisions = new double[2] { 1, 1 },
+                Decisions = new double[2] { (2/3), (1/3) },
                 Quality = SolutionQuality.Optimal,
                 AlternateSolutionsExist = false,
-                OptimalValue = 2
+                OptimalValue = -5
             };
 
             Solution s = target.Solve(model);
