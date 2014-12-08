@@ -107,7 +107,7 @@ namespace RaikesSimplexService.InsertTeamNameHere
 
             model.setConstraints(newConstraints);
             model.setGoal(wGoal);
-            // ashley's method
+            negateZ(model);
         }
 
         public LinearConstraint convertInequality(LinearConstraint lc, int sCount, int sOffset, int aOffset, int totalLength)
@@ -271,6 +271,7 @@ namespace RaikesSimplexService.InsertTeamNameHere
                 ConstantTerm = model.Constraints[model.Constraints.Count - 1].Value
             };
             model.setGoal(zGoal);
+            negateZ(model);
              
             model.Constraints.RemoveAt(model.Constraints.Count - 1);
         }
@@ -296,6 +297,16 @@ namespace RaikesSimplexService.InsertTeamNameHere
             return false;
         }
 
+        private void negateZ(Model model)
+        {
+
+            for (int i = 0; i < model.Goal.Coefficients.Length; i++)
+            {
+                model.Goal.Coefficients[i] = model.Goal.Coefficients[i] * -1;
+            }
+            model.Goal.ConstantTerm = model.Goal.ConstantTerm * -1;
+
+        }
 
     }
 }
