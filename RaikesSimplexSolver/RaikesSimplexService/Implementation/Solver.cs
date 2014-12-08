@@ -25,7 +25,7 @@ namespace RaikesSimplexService.InsertTeamNameHere
 
             if (twoPhase)
             {
-                // Ashley's method to remove wRow and make zGoal
+                removeWRow(model);
                 reduce(model, basicVariableIndecies);
 
 
@@ -86,7 +86,7 @@ namespace RaikesSimplexService.InsertTeamNameHere
             };
             if (aCount > 0)
             {
-                // do Ashley's method to add zRow to Constraints
+                addZtoCoeffMatrix(model);
             }
             foreach (LinearConstraint constraint in model.Constraints)
             {
@@ -102,17 +102,12 @@ namespace RaikesSimplexService.InsertTeamNameHere
                     }
                     wGoal.ConstantTerm += constraint.Value;
                 }
-                else
-                {
-                    for (int i = 0; i < model.Goal.Coefficients.Length; i++)
-                    {
-                        wGoal.Coefficients[i] = -1 * model.Goal.Coefficients[i];
-                    }
-                    wGoal.ConstantTerm = model.Goal.ConstantTerm;
-                }
+                
             }
+
             model.setConstraints(newConstraints);
             model.setGoal(wGoal);
+            // ashley's method
         }
 
         public LinearConstraint convertInequality(LinearConstraint lc, int sCount, int sOffset, int aOffset, int totalLength)
