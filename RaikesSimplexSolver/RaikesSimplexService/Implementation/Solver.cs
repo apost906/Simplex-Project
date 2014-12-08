@@ -28,14 +28,6 @@ namespace RaikesSimplexService.InsertTeamNameHere
                 removeWRow(model, aCols);
                 basicVariableIndecies = basicColumnIndecies(model);
                 reduce(model, basicVariableIndecies);
-
-
-                // add zRow to coefficients
-                // make wRow the new goal
-                // reduce
-                // remove wRow
-                // make last of coefficients (zRow) the new goal
-                // reduce
             }
 
             Matrix<double> matrix = convertToMatrix(model);
@@ -106,8 +98,18 @@ namespace RaikesSimplexService.InsertTeamNameHere
                 
             }
 
+            if (aCount == 0)
+            {
+                for (int i = 0; i < model.Goal.Coefficients.Length; i++)
+                {
+                    wGoal.Coefficients[i] = model.Goal.Coefficients[i];
+                }
+                wGoal.ConstantTerm = model.Goal.ConstantTerm;
+            }
+
             model.setConstraints(newConstraints);
             model.setGoal(wGoal);
+            
             negateZ(model);
         }
 

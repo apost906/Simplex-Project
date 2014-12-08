@@ -70,7 +70,7 @@ namespace UnitTests
         ///A test for Solve
         ///</summary>
         [TestMethod()]
-        public void ExampleSolveTest()
+        public void Test1()
         {
             #region Arrange
             var target = new Solver();
@@ -145,7 +145,7 @@ namespace UnitTests
             #endregion
 
         [TestMethod()]
-        public void ExampleSolveTest2()
+        public void Test2()
         {
             #region Arrange
             var target = new Solver();
