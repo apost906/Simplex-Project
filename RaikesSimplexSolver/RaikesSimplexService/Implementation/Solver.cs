@@ -16,6 +16,10 @@ namespace RaikesSimplexService.InsertTeamNameHere
     {
         public Solution Solve(Model model)
         {
+            if (model.Goal.GoalKind.Equals(GoalKind.Minimize))
+            {
+                negateZ(model);
+            }
             double[] decision = new double[model.Constraints[0].Coefficients.Length];
             double optimalValue = 0;
             int aCols = numACol(model);
@@ -290,8 +294,14 @@ namespace RaikesSimplexService.InsertTeamNameHere
                 }
                 lc.Coefficients = coefficients;
             }
+            double[] c = new double[model.Goal.Coefficients.Length - aCols];
+            for (int i = 0; i < model.Goal.Coefficients.Length - aCols; i++)
+            {
+                c[i] = model.Goal.Coefficients[i];
+            }
+            model.Goal.Coefficients = c;
 
-                model.Constraints.RemoveAt(model.Constraints.Count - 1);
+            model.Constraints.RemoveAt(model.Constraints.Count - 1);
         }
 
         public void addZtoCoeffMatrix(Model model)
